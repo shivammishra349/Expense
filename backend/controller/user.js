@@ -1,4 +1,5 @@
 let User=require('../model/user')
+let bcrypt =require('bcrypt')
 
 function isStringInvalid(string){
     if(string == undefined|| string.length === 0){
@@ -23,13 +24,13 @@ exports.postSignup = async (req,res,next)=>{
         return res.status(400).json({err:'Bad parameters . Somthing went wrong'})
     }
 
-    let data = await User.create({
-        name:name,
-        email:email,
-        password:password
+    bcrypt.hash(password ,10, async (err,hash)=>{
+        console.log(err)
+        await User.create({ name,email,password:hash })
+        res.status(201).json({massage:'user created successfully'})
     })
 
-    res.status(201).json({massage:'user created successfully'})
+    
     }
     catch(err){
         res.status(403).json({err})
@@ -38,7 +39,7 @@ exports.postSignup = async (req,res,next)=>{
 }
 
 
-exports.postLogin= (req,res,next)=>{
+exports.postLogin= async(req,res,next)=>{
     try{
     let email = req.body.email;
     let password = req.body.password
@@ -47,26 +48,32 @@ exports.postLogin= (req,res,next)=>{
         res.status(400).json({message:'email id or password is missing'})
     }
 
-    let user= User.findAll({
+    let user= await User.findAll({
         where:{
             email:email,
-            password:password
+            // password:password
         }
-    }).then(user=>{
-        if(user.length >0){
-            if(user[0].password === password)
-            {
-                res.status(200).json({success:true,message:'user logged successfully'})
-            }
-            else
-            {
-                res.status(400).json({massege:'password is incorrect'})
-            }
+    })
+    // console.log(user)
+        if(user.length >0){ 
+            bcrypt.compare(password, user[0].password,(err,result)=>{
+                if(err){
+                    res.status(500).json({success:false,message:'somthing went wrong'})
+                }
+                if(result === true){
+                    res.status(200).json({success:true,message:'user logged successfully'})
+                }
+                else
+                {
+                    res.status(400).json({massege:'password is incorrect'})
+                }
+            })
+           
         }
         else{
             res.status(404).json({success:false,message:'user does not exits'})
         }
-    })
+    
 
    
 }
