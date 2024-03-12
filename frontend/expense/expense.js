@@ -13,13 +13,15 @@ async function fun(event){
     }
 
     // console.log(obj.num)
-    let res= await axios.post('http://localhost:4444/user/expense',obj)
+    let token = localStorage.getItem('token')
+    let res= await axios.post('http://localhost:4444/user/expense',obj,{headers : {'Authorization' : token}})
     showData(res.data.details)
 }
 
 async function getData(){
     try{
-    let res = await axios.get('http://localhost:4444/user/getexpense')
+    const token = localStorage.getItem('token')
+    let res = await axios.get('http://localhost:4444/user/getexpense',{headers : {'Authorization' : token}})
     for(let i=0;i<res.data.details.length;i++){
         showData(res.data.details[i])
     }
@@ -51,7 +53,8 @@ function showData(obj){
    async function deleteExpense(){
 
         try{
-           await axios.delete(`http://localhost:4444/user/deleteExpense/${obj.id}`)
+            let token = localStorage.getItem('token')
+           await axios.delete(`http://localhost:4444/user/deleteExpense/${obj.id}`, {headers : {'Authorization ' : token}})
             list.removeChild(li)
         }
         catch(err){

@@ -2,7 +2,7 @@ let Expense = require('../model/expense')
 
 exports.getExpense =async(req,res,next)=>{
     try{
-        const data= await Expense.findAll();
+        const data= await Expense.findAll({where : {userId: req.user.id}});
         res.status(200).json({details:data})
     }
     catch(err){
@@ -15,15 +15,17 @@ exports.addExpense = async(req,res,next)=>{
     let amount= req.body.num;
     let des = req.body.description;
     let catagory = req.body.catagory;
+    let userId= req.user.id
 
-    console.log(amount);
-    console.log(des);
-    console.log(catagory)
+    // console.log(amount);
+    // console.log(des);
+    // console.log(catagory)
 
     let data = await Expense.create({
         amount:amount,
         description:des,
-        catagory:catagory
+        catagory:catagory,
+        userId: userId
     })
 
     res.status(200).json({details:data})
@@ -40,7 +42,7 @@ exports.deleteExpense =async (req,res,next)=>{
             console.log('id not found')
             return res.status(400).json({message:'id is missing'})
         }
-        let id = req.params.id;
+        let id = req.user.id;
         console.log(id)
 
     

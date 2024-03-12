@@ -1,5 +1,6 @@
 let User=require('../model/user')
 let bcrypt =require('bcrypt')
+let jwt = require('jsonwebtoken')
 
 function isStringInvalid(string){
     if(string == undefined|| string.length === 0){
@@ -38,6 +39,10 @@ exports.postSignup = async (req,res,next)=>{
     
 }
 
+function generateAccesToken(id,name){
+    return jwt.sign({userId : id,name:name},'842124jdsajfsd8fu890sd8f0asd89isfjsf089')
+}
+
 
 exports.postLogin= async(req,res,next)=>{
     try{
@@ -61,7 +66,7 @@ exports.postLogin= async(req,res,next)=>{
                     res.status(500).json({success:false,message:'somthing went wrong'})
                 }
                 if(result === true){
-                    res.status(200).json({success:true,message:'user logged successfully'})
+                    res.status(200).json({success:true,message:'user logged successfully',token:generateAccesToken(user[0].id,user[0].name)})
                 }
                 else
                 {

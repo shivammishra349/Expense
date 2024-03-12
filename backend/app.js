@@ -2,7 +2,7 @@ let express=require('express')
 
 let sequelize = require('./database/connection')
 
-let user=require('./model/user')
+let user = require('./model/user')
 
 let expense = require('./model/expense')
 
@@ -22,7 +22,11 @@ app.use(userRoute)
 
 app.use(expenseRoute)
 
-sequelize.sync({force:false})
+user.hasMany(expense)
+expense.belongsTo(user)
+
+
+sequelize.sync()
     .then(()=>{
         app.listen(4444)
     })
