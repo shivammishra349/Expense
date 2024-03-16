@@ -4,7 +4,7 @@ let jwt = require('jsonwebtoken')
 
 exports.authenticate = (req,res,next)=>{
     try{
-        const token =   req.header('Authorization');
+        const token =  req.header('Authorization');
         console.log(token);
 
         let user = jwt.verify(token,'842124jdsajfsd8fu890sd8f0asd89isfjsf089')

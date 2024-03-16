@@ -4,8 +4,8 @@ let router=express.Router();
 
 let Controller = require('../controller/user')
 
-router.post('/user/signup',Controller.postSignup)
+router.post('/signup',Controller.postSignup)
 
-router.post('/user/login',Controller.postLogin)
+router.post('/login',Controller.postLogin)
 
 module.exports = router

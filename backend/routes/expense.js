@@ -6,10 +6,10 @@ let expenseController = require('../controller/expense')
 
 const Userauth = require('../middleware/auth')
 
-router.get('/user/getexpense', Userauth.authenticate , expenseController.getExpense)
+router.get('/getexpense', Userauth.authenticate , expenseController.getExpense)
 
-router.post('/user/expense',Userauth.authenticate , expenseController.addExpense)
+router.post('/expense',Userauth.authenticate , expenseController.addExpense)
 
-router.delete('/user/deleteExpense/:id',Userauth.authenticate,expenseController.deleteExpense)
+router.delete('/deleteExpense/:id',Userauth.authenticate,expenseController.deleteExpense)
 
 module.exports = router

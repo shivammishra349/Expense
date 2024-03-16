@@ -1,3 +1,6 @@
+
+
+
 async function fun(event){
     event.preventDefault();
     let num=event.target.num.value;
@@ -14,14 +17,14 @@ async function fun(event){
 
     // console.log(obj.num)
     let token = localStorage.getItem('token')
-    let res= await axios.post('http://localhost:4444/user/expense',obj,{headers : {'Authorization' : token}})
+    let res= await axios.post('http://localhost:4444/expense/expense',obj,{headers : {'Authorization' : token}})
     showData(res.data.details)
 }
 
 async function getData(){
     try{
     const token = localStorage.getItem('token')
-    let res = await axios.get('http://localhost:4444/user/getexpense',{headers : {'Authorization' : token}})
+    let res = await axios.get('http://localhost:4444/expense/getexpense',{headers : {'Authorization' : token}})
     for(let i=0;i<res.data.details.length;i++){
         showData(res.data.details[i])
     }
@@ -31,6 +34,9 @@ catch(err){
 }
 }
 getData()
+
+
+
 
 
 function showData(obj){
@@ -62,4 +68,44 @@ function showData(obj){
         }
 
     }
+}
+
+document.getElementById('premium').onclick = async function(e) {
+    const token = localStorage.getItem('token')
+    let res= await axios.get('http://localhost:4444/purchase/getpremium', {headers :{'Authorization': token}})
+            console.log(res.data)
+
+    var options = {
+        "key" : res.data.key_id,
+        "order_id": res.data.order.id,
+
+        "handler" : async function (res){
+            try{
+               
+                await axios.post('http://localhost:4444/purchase/updatetransaction',{
+                order_id: options.order_id,
+                payment_id: res.razorpay_payment_id,
+            },{headers :{'Authorization' :token} })
+
+            alert('you are a premium user now')
+            }
+           catch(err){
+            console.log(err)
+           }
+        },
+    };
+
+
+const rzp1 = new Razorpay(options);
+rzp1.open();
+e.preventDefault()
+
+rzp1.on('payment.failed' ,async function(res){
+    console.log('payment failed', res);
+    const updateResponse = await axios.post('http://localhost:4444/purchase/updatetransaction',
+    {
+        order_id:options.order_id
+    },{headers :{'Authorization' :token} })
+    
+})
 }

@@ -6,6 +6,8 @@ let user = require('./model/user')
 
 let expense = require('./model/expense')
 
+let order = require('./model/order')
+
 const cors=require('cors');
 
 let app=express();
@@ -14,16 +16,23 @@ let userRoute = require('./routes/user')
 
 let expenseRoute =require('./routes/expense')
 
+let purchaseRoute = require('./routes/premium')
+
 app.use(cors());
 
 app.use(express.json())
 
-app.use(userRoute)
+app.use('/user',userRoute)
 
-app.use(expenseRoute)
+app.use('/expense',expenseRoute)
+
+app.use('/purchase' , purchaseRoute)
 
 user.hasMany(expense)
 expense.belongsTo(user)
+
+user.hasMany(order)
+order.belongsTo(user)
 
 
 sequelize.sync()

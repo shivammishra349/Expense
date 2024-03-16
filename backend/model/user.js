@@ -21,6 +21,7 @@ const table=sequelize.define('users',{
         type:Sequelize.STRING,
         allowNull:false 
     },
+   ispremiumuser : Sequelize.BOOLEAN
    
 })
 
