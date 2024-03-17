@@ -1,35 +1,27 @@
-let User = require('../model/user')
+const sequelize = require('../database/connection');
+const User = require('../model/user');
+const Expense = require('../model/expense');
 
-let Expense = require('../model/expense')
-
-exports.getFeatures = async (req,res,next) =>{
-    try{
-        let user = await  User.findAll();
-        let expense =await Expense.findAll()
-
-        const AgreegateExpense = {}
-        expense.forEach((expense)=>{
-            if(AgreegateExpense[expense.userId]){
-                AgreegateExpense[expense.userId] = AgreegateExpense[expense.userId] + expense.amount
-            }
-            else{
-                AgreegateExpense[expense.userId] = expense.amount
-            }
-        })
-
-        var userLeaderboardDetails = []
-        user.forEach((user)=>{
-            
-            userLeaderboardDetails.push({name:user.name, total_cost:AgreegateExpense[user.id] || 0})
-            
-        })
-
-        userLeaderboardDetails.sort((a, b) => b.total_cost - a.total_cost);
-        console.log(userLeaderboardDetails)
-        res.status(200).json(userLeaderboardDetails)
+exports.getFeatures = async (req, res, next) => {
+    try {
+        let users = await User.findAll({
+            attributes: [
+                'id', 
+                'name', 
+                [sequelize.fn('coalesce',sequelize.fn('sum', sequelize.col('expenses.amount')),0), 'Total_cost']
+            ],
+            include: {
+                model: Expense,
+                attributes: [] 
+            },
+            group: ['users.id'] ,
+            order:[['Total_cost','DESC']]
+        });
+       
+        res.status(200).json(users);
         
-    }
-    catch(err){
-        res.status(500).json({message:'somthing went wrong'})
+    } catch (err) {
+        console.log('error',err)
+        res.status(500).json({ message: 'Internal server error' });
     }   
-}
+};

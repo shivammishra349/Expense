@@ -167,7 +167,7 @@ function isPremium(){
                 leaderboard.innerHTML += '<h1>Leader Board</h1>'
 
                 result.data.forEach((details)=>{
-                    leaderboard.innerHTML += `<li>Name :- ${details.name} , Total-Expensecost:- ${details.total_cost}</li>`
+                    leaderboard.innerHTML += `<li>Name :- ${details.name} , Total-Expensecost:- ${details.Total_cost}</li>`
                 })
         }
 
