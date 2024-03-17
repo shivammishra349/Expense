@@ -18,6 +18,8 @@ let expenseRoute =require('./routes/expense')
 
 let purchaseRoute = require('./routes/premium')
 
+let primumRoute = require('./routes/premiumfeatures')
+
 app.use(cors());
 
 app.use(express.json())
@@ -27,6 +29,8 @@ app.use('/user',userRoute)
 app.use('/expense',expenseRoute)
 
 app.use('/purchase' , purchaseRoute)
+
+app.use('/premium' , primumRoute)
 
 user.hasMany(expense)
 expense.belongsTo(user)

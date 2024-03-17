@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body id ='body'>
     <form onsubmit="fun(event)">
         <label for="num">Choose Expenseamount:</label>
         <input type="number" name="num" id="num">
@@ -24,7 +24,10 @@
     <button id="premium">Buy Premium</button>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <ul id="data"></ul>
+    <p id = "message"></p>
+
+    <ul id="data"><h1>Your expense</h1></ul>
+    <ul id="leaderboard"></ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
     <script src="expense.js"></script>
 </body>

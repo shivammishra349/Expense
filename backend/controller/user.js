@@ -12,7 +12,7 @@ function isStringInvalid(string){
     }
 }
 
-exports.postSignup = async (req,res,next)=>{
+const postSignup = async (req,res,next)=>{
 
     try{
     
@@ -39,12 +39,12 @@ exports.postSignup = async (req,res,next)=>{
     
 }
 
-function generateAccesToken(id,name){
-    return jwt.sign({userId : id,name:name},'842124jdsajfsd8fu890sd8f0asd89isfjsf089')
+const generateAccesToken=(id,name,ispremiumuser)=>{
+    return jwt.sign({userId : id,name:name,ispremiumuser:ispremiumuser },'842124jdsajfsd8fu890sd8f0asd89isfjsf089')
 }
 
 
-exports.postLogin= async(req,res,next)=>{
+const postLogin= async(req,res,next)=>{
     try{
     let email = req.body.email;
     let password = req.body.password
@@ -66,7 +66,7 @@ exports.postLogin= async(req,res,next)=>{
                     res.status(500).json({success:false,message:'somthing went wrong'})
                 }
                 if(result === true){
-                    res.status(200).json({success:true,message:'user logged successfully',token:generateAccesToken(user[0].id,user[0].name)})
+                    res.status(200).json({success:true,message:'user logged successfully',token:generateAccesToken(user[0].id,user[0].name,user[0].ispremiumuser)})
                 }
                 else
                 {
@@ -89,3 +89,9 @@ catch(err){
     
     
 }
+
+module.exports = {
+    generateAccesToken,
+    postSignup,
+    postLogin
+};

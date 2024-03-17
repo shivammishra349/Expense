@@ -12,7 +12,6 @@ let Table = sequelize.define('expense',{
     },
     amount:{
         type:Sequelize.INTEGER,
-        allowNull:false
     },
     description:{
         type:Sequelize.STRING,
