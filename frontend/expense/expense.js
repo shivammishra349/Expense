@@ -3,22 +3,22 @@
 
 async function fun(event){
     event.preventDefault();
-    let num=event.target.num.value;
+    let amount=event.target.num.value;
     let description=event.target.description.value;
     let catagory=event.target.expense.value
 
     // console.log(num)
 
     let obj={
-        num,
+        amount,
         description,
         catagory
     }
 
     // console.log(obj.num)
     let token = localStorage.getItem('token')
-    let res= await axios.post('http://localhost:4444/expense/expense',obj,{headers : {'Authorization' : token}})
-    showData(res.data.details)
+    let res= await axios.post('http://localhost:4444/expense/addexpense',obj,{headers : {'Authorization' : token}})
+    showData(res.data.expense)
 }
 
 
@@ -46,6 +46,7 @@ async function getData(){
     for(let i=0;i<res.data.details.length;i++){
         showData(res.data.details[i])
     }
+    // console.log(res.data)
 }
 catch(err){
     console.log(err)
@@ -82,7 +83,7 @@ function showData(obj){
 
         try{
             let token = localStorage.getItem('token')
-           await axios.delete(`http://localhost:4444/user/deleteExpense/${obj.id}`, {headers : {'Authorization ' : token}})
+           await axios.delete(`http://localhost:4444/expense/deleteExpense/${obj.id}`, {headers : {'Authorization ' : token}})
             list.removeChild(li)
         }
         catch(err){
@@ -174,5 +175,3 @@ function isPremium(){
         
 
 }
-
-

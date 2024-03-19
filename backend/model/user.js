@@ -17,6 +17,10 @@ const table=sequelize.define('users',{
         allowNull:false,
         unique:true
     },
+    Total_cost:{
+        type:Sequelize.INTEGER,
+        defaultValue:0,
+    },
     password:{
         type:Sequelize.STRING,
         allowNull:false 

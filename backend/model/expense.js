@@ -13,9 +13,10 @@ let Table = sequelize.define('expense',{
     amount:{
         type:Sequelize.INTEGER,
     },
+    
     description:{
         type:Sequelize.STRING,
-        allowNull:false
+        //  allowNull:false
     },
     catagory:{
         type:Sequelize.STRING,

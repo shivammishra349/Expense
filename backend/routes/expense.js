@@ -8,7 +8,7 @@ const Userauth = require('../middleware/auth')
 
 router.get('/getexpense', Userauth.authenticate , expenseController.getExpense)
 
-router.post('/expense',Userauth.authenticate , expenseController.addExpense)
+router.post('/addexpense',Userauth.authenticate , expenseController.addExpense)
 
 router.delete('/deleteExpense/:id',Userauth.authenticate,expenseController.deleteExpense)
 
